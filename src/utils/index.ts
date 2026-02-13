@@ -1,4 +1,12 @@
+import MarkdownIt from 'markdown-it';
+
 import { CandidateResult } from '@/types';
+
+const md = new MarkdownIt({
+  html: false,       // safer if content is user-provided
+  linkify: true,
+  typographer: true,
+});
 
 export const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-GB', {
@@ -346,6 +354,53 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
         .icon-check {
             stroke: #28a745; /* green */
         }
+
+        .question {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .question-option {
+            width: 100%;
+            border: 1px solid #c1c2c3;
+            border-radius: 8px;
+            padding: 5px 10px;
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0 0.5rem;
+        }
+
+        .question-option-wrong {
+            border-color: #fb2c36;
+        }
+
+        .question-option-correct {
+            border-color: #28a745;
+        }
+
+        .question-option-unattempted {
+            border-color: #6f6fdde0;
+        }
+
+        .options-container {
+            padding-left: 10px;
+            margin-bottom: 15px;
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3,
+        .markdown-body h4,
+        .markdown-body h5,
+        .markdown-body h6 {
+            font-weight: 400;
+        }
+
+        .markdown-body strong {
+            font-weight: 500; 
+        }
+
     </style>
 </head>
 <body>
@@ -468,6 +523,293 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
                             <div class="topicTitle">
                                 ${result[0].section} • ${result[0].obtainedMarks} / ${result[0].totalMarks}
                             </div>
+                            
+                            <!-- Section 1 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[0].questions[0].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[0]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[0]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[1]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[1]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[2]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[2]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[3]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[3]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[0].questions[1].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[0]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[0]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[1]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[1]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[2]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[2]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[3]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[3]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="tableWrapper">
                                 <table class="table">
@@ -558,6 +900,435 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
                         <div class="resultContainer">
                             <div class="topicTitle">
                                 ${result[1].section} • ${result[1].obtainedMarks} / ${result[1].totalMarks}
+                            </div>
+
+                            <!-- Section 2 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[1].questions[0].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[0]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[0]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[1]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[1]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[2]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[2]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[3]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[3]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[1].questions[1].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[0]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[0]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[1]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[1]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[2]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[2]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[3]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[3]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Question 3 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[1].questions[2].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[0]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[0]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[2].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[1]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[1]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[2].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[2]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[2]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[2].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[3]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[3]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[2].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tableWrapper">
@@ -685,6 +1456,294 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
                                 ${result[2].section} • ${result[2].obtainedMarks} / ${result[2].totalMarks}
                             </div>
 
+                            <!-- Section 3 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[1].questions[0].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[0]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[0]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[1]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[1]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[2]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[2]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[3]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[3]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[2].questions[1].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[0]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[0]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[1]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[1]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[2]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[2]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[3]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[3]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
                             <div class="tableWrapper">
                                 <table class="table">
                                     <thead class="thead">
@@ -774,6 +1833,435 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
                         <div class="resultContainer">
                             <div class="topicTitle">
                                 ${result[3].section} • ${result[3].obtainedMarks} / ${result[3].totalMarks}
+                            </div>
+
+                            <!-- Section 1 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[3].questions[0].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[0]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[0]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[1]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[1]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[2]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[2]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[3]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[3]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[3].questions[1].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[0]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[0]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[1]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[1]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[2]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[2]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[3]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[3]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 3 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[3].questions[2].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[3].questions[2].correctOption === result[3].questions[2].options[0]
+                                                ? result[3].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[2].userAnswer === result[3].questions[2].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[2].correctOption === result[3].questions[2].options[0]
+                                                ? result[3].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[2].userAnswer === result[3].questions[2].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[2].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[3].questions[2].correctOption === result[3].questions[2].options[1]
+                                                ? result[3].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[2].userAnswer === result[3].questions[2].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[2].correctOption === result[3].questions[2].options[1]
+                                                ? result[3].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[2].userAnswer === result[3].questions[2].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[2].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[3].questions[2].correctOption === result[3].questions[2].options[2]
+                                                ? result[3].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[2].userAnswer === result[3].questions[2].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[2].correctOption === result[3].questions[2].options[2]
+                                                ? result[3].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[2].userAnswer === result[3].questions[2].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[2].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[3].questions[2].correctOption === result[3].questions[2].options[3]
+                                                ? result[3].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[2].userAnswer === result[3].questions[2].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[2].correctOption === result[3].questions[2].options[3]
+                                                ? result[3].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[2].userAnswer === result[3].questions[2].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[2].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tableWrapper">
@@ -901,6 +2389,293 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
                                 ${result[4].section} • ${result[4].obtainedMarks} / ${result[4].totalMarks}
                             </div>
 
+                            <!-- Section 5 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[4].questions[0].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[0]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[0]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[1]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[1]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[2]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[2]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[3]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[3]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[4].questions[1].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[4].questions[1].correctOption === result[4].questions[1].options[0]
+                                                ? result[4].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[1].userAnswer === result[4].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[1].correctOption === result[4].questions[1].options[0]
+                                                ? result[4].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[1].userAnswer === result[4].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[4].questions[1].correctOption === result[4].questions[1].options[1]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[1].userAnswer === result[4].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[1].correctOption === result[4].questions[1].options[1]
+                                                ? result[4].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[1].userAnswer === result[4].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[4].questions[1].correctOption === result[4].questions[1].options[2]
+                                                ? result[4].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[1].userAnswer === result[4].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[1].correctOption === result[4].questions[1].options[2]
+                                                ? result[4].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[1].userAnswer === result[4].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[4].questions[1].correctOption === result[4].questions[1].options[3]
+                                                ? result[4].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[1].userAnswer === result[4].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[1].correctOption === result[4].questions[1].options[3]
+                                                ? result[4].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[1].userAnswer === result[4].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="tableWrapper">
                                 <table class="table">
                                     <thead class="thead">
@@ -990,6 +2765,293 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
                         <div class="resultContainer">
                             <div class="topicTitle">
                                 ${result[5].section} • ${result[5].obtainedMarks} / ${result[5].totalMarks}
+                            </div>
+
+                            <!-- Section 6 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[5].questions[0].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[0]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[0]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[1]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[1]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[2]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[2]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[3]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[3]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[5].questions[1].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[5].questions[1].correctOption === result[5].questions[1].options[0]
+                                                ? result[5].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[1].userAnswer === result[5].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[1].correctOption === result[5].questions[1].options[0]
+                                                ? result[5].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[1].userAnswer === result[5].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[5].questions[1].correctOption === result[5].questions[1].options[1]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[1].userAnswer === result[5].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[1].correctOption === result[5].questions[1].options[1]
+                                                ? result[5].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[1].userAnswer === result[5].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[5].questions[1].correctOption === result[5].questions[1].options[2]
+                                                ? result[5].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[1].userAnswer === result[5].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[1].correctOption === result[5].questions[1].options[2]
+                                                ? result[5].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[1].userAnswer === result[5].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[5].questions[1].correctOption === result[5].questions[1].options[3]
+                                                ? result[5].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[1].userAnswer === result[5].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[1].correctOption === result[5].questions[1].options[3]
+                                                ? result[5].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[1].userAnswer === result[5].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tableWrapper">
@@ -1083,6 +3145,151 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
                                 ${result[6].section} • ${result[6].obtainedMarks} / ${result[6].totalMarks}
                             </div>
 
+                            <!-- Section 7 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[6].questions[0].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[6].questions[0].correctOption === result[6].questions[0].options[0]
+                                                ? result[6].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[6].questions[0].userAnswer === result[6].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[6].questions[0].correctOption === result[6].questions[0].options[0]
+                                                ? result[6].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[6].questions[0].userAnswer === result[6].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[6].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[6].questions[0].correctOption === result[6].questions[0].options[1]
+                                                ? result[6].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[6].questions[0].userAnswer === result[6].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[6].questions[0].correctOption === result[6].questions[0].options[1]
+                                                ? result[6].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[6].questions[0].userAnswer === result[6].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[6].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[6].questions[0].correctOption === result[6].questions[0].options[2]
+                                                ? result[6].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[6].questions[0].userAnswer === result[6].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[6].questions[0].correctOption === result[6].questions[0].options[2]
+                                                ? result[6].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[6].questions[0].userAnswer === result[6].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[6].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[6].questions[0].correctOption === result[6].questions[0].options[3]
+                                                ? result[6].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[6].questions[0].userAnswer === result[6].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[6].questions[0].correctOption === result[6].questions[0].options[3]
+                                                ? result[6].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[6].questions[0].userAnswer === result[6].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[6].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="tableWrapper">
                                 <table class="table">
                                     <thead class="thead">
@@ -1138,6 +3345,293 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
                         <div class="resultContainer">
                             <div class="topicTitle">
                                 ${result[7].section} • ${result[7].obtainedMarks} / ${result[7].totalMarks}
+                            </div>
+
+                            <!-- Section 8 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[7].questions[0].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[7].questions[0].correctOption === result[7].questions[0].options[0]
+                                                ? result[7].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[7].questions[0].userAnswer === result[7].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[7].questions[0].correctOption === result[7].questions[0].options[0]
+                                                ? result[7].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[7].questions[0].userAnswer === result[7].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[7].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[7].questions[0].correctOption === result[7].questions[0].options[1]
+                                                ? result[7].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[7].questions[0].userAnswer === result[7].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[7].questions[0].correctOption === result[7].questions[0].options[1]
+                                                ? result[7].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[7].questions[0].userAnswer === result[7].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[7].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[7].questions[0].correctOption === result[7].questions[0].options[2]
+                                                ? result[7].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[7].questions[0].userAnswer === result[7].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[7].questions[0].correctOption === result[7].questions[0].options[2]
+                                                ? result[7].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[7].questions[0].userAnswer === result[7].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[7].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[7].questions[0].correctOption === result[7].questions[0].options[3]
+                                                ? result[7].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[7].questions[0].userAnswer === result[7].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[7].questions[0].correctOption === result[7].questions[0].options[3]
+                                                ? result[7].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[7].questions[0].userAnswer === result[7].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[7].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[7].questions[1].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[7].questions[1].correctOption === result[7].questions[1].options[0]
+                                                ? result[7].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[7].questions[1].userAnswer === result[7].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[7].questions[1].correctOption === result[7].questions[1].options[0]
+                                                ? result[7].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[7].questions[1].userAnswer === result[7].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[7].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[7].questions[1].correctOption === result[7].questions[1].options[1]
+                                                ? result[7].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[7].questions[1].userAnswer === result[7].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[7].questions[1].correctOption === result[7].questions[1].options[1]
+                                                ? result[7].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[7].questions[1].userAnswer === result[7].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[7].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[7].questions[1].correctOption === result[7].questions[1].options[2]
+                                                ? result[7].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[7].questions[1].userAnswer === result[7].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[7].questions[1].correctOption === result[7].questions[1].options[2]
+                                                ? result[7].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[7].questions[1].userAnswer === result[7].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[7].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[7].questions[1].correctOption === result[7].questions[1].options[3]
+                                                ? result[7].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[7].questions[1].userAnswer === result[7].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[7].questions[1].correctOption === result[7].questions[1].options[3]
+                                                ? result[7].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[7].questions[1].userAnswer === result[7].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[7].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tableWrapper">
@@ -1231,6 +3725,151 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
                                 ${result[8].section} • ${result[8].obtainedMarks} / ${result[8].totalMarks}
                             </div>
 
+                            <!-- Section 1 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[8].questions[0].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[8].questions[0].correctOption === result[8].questions[0].options[0]
+                                                ? result[8].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[8].questions[0].userAnswer === result[8].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[8].questions[0].correctOption === result[8].questions[0].options[0]
+                                                ? result[8].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[8].questions[0].userAnswer === result[8].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[8].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[8].questions[0].correctOption === result[8].questions[0].options[1]
+                                                ? result[8].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[8].questions[0].userAnswer === result[8].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[8].questions[0].correctOption === result[8].questions[0].options[1]
+                                                ? result[8].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[8].questions[0].userAnswer === result[8].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[8].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[8].questions[0].correctOption === result[8].questions[0].options[2]
+                                                ? result[8].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[8].questions[0].userAnswer === result[8].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[8].questions[0].correctOption === result[8].questions[0].options[2]
+                                                ? result[8].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[8].questions[0].userAnswer === result[8].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[8].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[8].questions[0].correctOption === result[8].questions[0].options[3]
+                                                ? result[8].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[8].questions[0].userAnswer === result[8].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[8].questions[0].correctOption === result[8].questions[0].options[3]
+                                                ? result[8].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[8].questions[0].userAnswer === result[8].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="tableWrapper">
                                 <table class="table">
                                     <thead class="thead">
@@ -1286,6 +3925,293 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
                         <div class="resultContainer">
                             <div class="topicTitle">
                                 ${result[9].section} • ${result[9].obtainedMarks} / ${result[9].totalMarks}
+                            </div>
+
+                            <!-- Section 1 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[9].questions[0].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[9].questions[0].correctOption === result[9].questions[0].options[0]
+                                                ? result[9].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[9].questions[0].userAnswer === result[9].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[9].questions[0].correctOption === result[9].questions[0].options[0]
+                                                ? result[9].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[9].questions[0].userAnswer === result[9].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[9].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[9].questions[0].correctOption === result[9].questions[0].options[1]
+                                                ? result[9].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[9].questions[0].userAnswer === result[9].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[9].questions[0].correctOption === result[9].questions[0].options[1]
+                                                ? result[9].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[9].questions[0].userAnswer === result[9].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[9].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[9].questions[0].correctOption === result[9].questions[0].options[2]
+                                                ? result[9].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[9].questions[0].userAnswer === result[9].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[9].questions[0].correctOption === result[9].questions[0].options[2]
+                                                ? result[9].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[9].questions[0].userAnswer === result[9].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[9].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[9].questions[0].correctOption === result[9].questions[0].options[3]
+                                                ? result[9].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[9].questions[0].userAnswer === result[9].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[9].questions[0].correctOption === result[9].questions[0].options[3]
+                                                ? result[9].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[9].questions[0].userAnswer === result[9].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[9].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${result[9].questions[1].problemStatement}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[9].questions[1].correctOption === result[9].questions[1].options[0]
+                                                ? result[9].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[9].questions[1].userAnswer === result[9].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[9].questions[1].correctOption === result[9].questions[1].options[0]
+                                                ? result[9].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[9].questions[1].userAnswer === result[9].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[9].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[9].questions[1].correctOption === result[9].questions[1].options[1]
+                                                ? result[9].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[9].questions[1].userAnswer === result[9].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[9].questions[1].correctOption === result[9].questions[1].options[1]
+                                                ? result[9].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[9].questions[1].userAnswer === result[9].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[9].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[9].questions[1].correctOption === result[9].questions[1].options[2]
+                                                ? result[9].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[9].questions[1].userAnswer === result[9].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[9].questions[1].correctOption === result[9].questions[1].options[2]
+                                                ? result[9].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[9].questions[1].userAnswer === result[9].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[9].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[9].questions[1].correctOption === result[9].questions[1].options[3]
+                                                ? result[9].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[9].questions[1].userAnswer === result[9].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[9].questions[1].correctOption === result[9].questions[1].options[3]
+                                                ? result[9].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[9].questions[1].userAnswer === result[9].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[9].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tableWrapper">
@@ -1385,6 +4311,25 @@ export function intermediateTestPdfContent(candidateResult: CandidateResult) {
 export function advancedTestPdfContent(candidateResult: CandidateResult) {
     const { candidateName, candidateEmail, percentage, totalMarks, obtainedMarks, invitedBy, invitedOn, takenOn, timeTaken, workExperience, sections } = candidateResult;
     const result = sections;
+
+    const s1q1 = md.render(result[0].questions[0].problemStatement);
+    const s1q2 = md.render(result[0].questions[1].problemStatement);
+    const s1q3 = md.render(result[0].questions[2].problemStatement);
+
+    const s2q1 = md.render(result[1].questions[0].problemStatement);
+    const s2q2 = md.render(result[1].questions[1].problemStatement);
+    const s2q3 = md.render(result[1].questions[2].problemStatement);
+
+    const s3q1 = md.render(result[2].questions[0].problemStatement);
+    const s3q2 = md.render(result[2].questions[1].problemStatement);
+
+    const s4q1 = md.render(result[3].questions[0].problemStatement);
+    const s4q2 = md.render(result[3].questions[1].problemStatement);
+
+    const s5q1 = md.render(result[4].questions[0].problemStatement);
+
+    const s6q1 = md.render(result[5].questions[0].problemStatement);
+
 
     return `<!DOCTYPE html>
 <html lang="en">
@@ -1691,6 +4636,54 @@ export function advancedTestPdfContent(candidateResult: CandidateResult) {
         .icon-check {
             stroke: #28a745; /* green */
         }
+
+        .question {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .question-option {
+            width: 100%;
+            border: 1px solid #c1c2c3;
+            border-radius: 8px;
+            padding: 5px 10px;
+            margin: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0 0.5rem;
+        }
+
+        .question-option-wrong {
+            border-color: #fb2c36;
+        }
+
+        .question-option-correct {
+            border-color: #28a745;
+        }
+
+        .question-option-unattempted {
+            border-color: #6f6fdde0;
+        }
+
+        .options-container {
+            padding-left: 10px;
+            margin-bottom: 20px;
+        }
+
+        .markdown-body h1,
+        .markdown-body h2,
+        .markdown-body h3,
+        .markdown-body h4,
+        .markdown-body h5,
+        .markdown-body h6 {
+            font-weight: 400;
+        }
+
+        .markdown-body strong {
+            font-weight: 500; 
+        }
+
+
     </style>
 </head>
 <body>
@@ -1812,6 +4805,435 @@ export function advancedTestPdfContent(candidateResult: CandidateResult) {
                         <div class="resultContainer">
                             <div class="topicTitle">
                                 ${result[0].section} • ${result[0].obtainedMarks} / ${result[0].totalMarks}
+                            </div>
+
+                            <!-- Section 1 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${s1q1}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[0]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[0]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[1]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[1]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[2]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[2]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[3]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[0].correctOption === result[0].questions[0].options[3]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[0].userAnswer === result[0].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${s1q2}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[0]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[0]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[1]
+                                                ? result[0].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[1]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[2]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[2]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[3]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[1].correctOption === result[0].questions[1].options[3]
+                                                ? result[0].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[1].userAnswer === result[0].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 3 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${s1q3}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[0].questions[2].correctOption === result[0].questions[2].options[0]
+                                                ? result[0].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[2].userAnswer === result[0].questions[2].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[2].correctOption === result[0].questions[2].options[0]
+                                                ? result[0].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[2].userAnswer === result[0].questions[2].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[2].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[0].questions[2].correctOption === result[0].questions[2].options[1]
+                                                ? result[0].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[2].userAnswer === result[0].questions[2].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[2].correctOption === result[0].questions[2].options[1]
+                                                ? result[0].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[2].userAnswer === result[0].questions[2].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[2].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[0].questions[2].correctOption === result[0].questions[2].options[2]
+                                                ? result[0].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[2].userAnswer === result[0].questions[2].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[2].correctOption === result[0].questions[2].options[2]
+                                                ? result[0].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[2].userAnswer === result[0].questions[2].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[2].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[0].questions[2].correctOption === result[0].questions[2].options[3]
+                                                ? result[0].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[0].questions[2].userAnswer === result[0].questions[2].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[0].questions[2].correctOption === result[0].questions[2].options[3]
+                                                ? result[0].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[0].questions[2].userAnswer === result[0].questions[2].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[0].questions[2].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tableWrapper">
@@ -1939,6 +5361,435 @@ export function advancedTestPdfContent(candidateResult: CandidateResult) {
                                 ${result[1].section} • ${result[1].obtainedMarks} / ${result[1].totalMarks}
                             </div>
 
+                            <!-- Section 2 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${s2q1}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[0]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[0]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[1]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[1]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[2]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[2]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[3]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[0].correctOption === result[1].questions[0].options[3]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[0].userAnswer === result[1].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${s2q2}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[0]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[0]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[1]
+                                                ? result[1].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[1]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[2]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[2]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[3]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[1].correctOption === result[1].questions[1].options[3]
+                                                ? result[1].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[1].userAnswer === result[1].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 3 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${s2q3}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[0]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[0]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[2].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[1]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[1]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[2].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[2]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[2]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[2].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[3]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[1].questions[2].correctOption === result[1].questions[2].options[3]
+                                                ? result[1].questions[2].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[1].questions[2].userAnswer === result[1].questions[2].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[1].questions[2].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="tableWrapper">
                                 <table class="table">
                                     <thead class="thead">
@@ -2064,6 +5915,293 @@ export function advancedTestPdfContent(candidateResult: CandidateResult) {
                                 ${result[2].section} • ${result[2].obtainedMarks} / ${result[2].totalMarks}
                             </div>
 
+                            <!-- Section 3 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${s3q1}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[0]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[0]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[1]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[1]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[2]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[2]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[3]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[0].correctOption === result[2].questions[0].options[3]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[0].userAnswer === result[2].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${s3q2}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[0]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[0]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[1]
+                                                ? result[2].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[1]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[2]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[2]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[3]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[2].questions[1].correctOption === result[2].questions[1].options[3]
+                                                ? result[2].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[2].questions[1].userAnswer === result[2].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[2].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="tableWrapper">
                                 <table class="table">
                                     <thead class="thead">
@@ -2153,6 +6291,293 @@ export function advancedTestPdfContent(candidateResult: CandidateResult) {
                         <div class="resultContainer">
                             <div class="topicTitle">
                                 ${result[3].section} • ${result[3].obtainedMarks} / ${result[3].totalMarks}
+                            </div>
+
+                            <!-- Section 4 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question-markdown-body">
+                                        ${s4q1}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[0]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[0]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[1]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[1]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[2]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[2]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[3]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[0].correctOption === result[3].questions[0].options[3]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[0].userAnswer === result[3].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- question 2 -->
+                                <div class="question-container">
+                                    <div class="question-markdown-body">
+                                        ${s4q2}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[0]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[0]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[1].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[1]
+                                                ? result[3].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[1]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[1].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[2]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[2]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[1].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[3]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[3].questions[1].correctOption === result[3].questions[1].options[3]
+                                                ? result[3].questions[1].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[3].questions[1].userAnswer === result[3].questions[1].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[3].questions[1].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tableWrapper">
@@ -2246,6 +6671,151 @@ export function advancedTestPdfContent(candidateResult: CandidateResult) {
                                 ${result[4].section} • ${result[4].obtainedMarks} / ${result[4].totalMarks}
                             </div>
 
+                            <!-- Section 5 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${s5q1}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[0]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[0]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[1]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[1]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[2]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[2]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[3]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[4].questions[0].correctOption === result[4].questions[0].options[3]
+                                                ? result[4].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[4].questions[0].userAnswer === result[4].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[4].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="tableWrapper">
                                 <table class="table">
                                     <thead class="thead">
@@ -2301,6 +6871,151 @@ export function advancedTestPdfContent(candidateResult: CandidateResult) {
                         <div class="resultContainer">
                             <div class="topicTitle">
                                 ${result[5].section} • ${result[5].obtainedMarks} / ${result[5].totalMarks}
+                            </div>
+
+                            <!-- Section 6 -->
+                            <div>
+                                <!-- Question 1 -->
+                                <div class="question-container">
+                                    <div class="question markdown-body">
+                                        ${s6q1}
+                                    </div>
+
+
+                                    <!-- option 1 -->
+                                    <div class="options-container">
+                                        <div class="question-option ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[0]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[0]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[0]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[0]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[0].options[0]}
+                                        </div>
+
+                                        <!-- option 2 -->
+                                        <div class="question-option ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[1]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[1]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[1]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[1]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[0].options[1]}
+                                        </div>
+
+                                        <!-- option 3 -->
+                                        <div class="question-option ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[2]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[2]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[2]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[2]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[0].options[2]}
+                                        </div>
+
+                                        <!-- option 4 -->
+                                        <div class="question-option ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[3]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? 'question-option-unattempted'
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[3]
+                                                        ? 'question-option-correct'
+                                                        : 'question-option-wrong'
+                                                : ''
+                                        }">
+                                            ${
+                                            result[5].questions[0].correctOption === result[5].questions[0].options[3]
+                                                ? result[5].questions[0].userAnswer == null
+                                                    ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-unanswered" fill="none" viewBox="0 0 24 24" stroke="gray" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10" />
+                                                            <path d="M12 7a2 2 0 1 1 2 2c-.667.333-1.333.667-2 1v2" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <circle cx="12" cy="16.5" r="1" fill="gray" />
+                                                        </svg>`
+                                                    : result[5].questions[0].userAnswer === result[5].questions[0].options[3]
+                                                        ? `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-check" fill="none" viewBox="0 0 24 24" stroke="green" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <polyline points="9 12 11.5 14.5 15 10" />
+                                                            </svg>`
+                                                        : `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-cross" fill="none" viewBox="0 0 24 24" stroke="red" stroke-width="2">
+                                                                <circle cx="12" cy="12" r="10" />
+                                                                <line x1="15" y1="9" x2="9" y2="15" />
+                                                                <line x1="9" y1="9" x2="15" y2="15" />
+                                                            </svg>`
+                                                : ''
+                                            }
+                                            ${result[5].questions[0].options[3]}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tableWrapper">

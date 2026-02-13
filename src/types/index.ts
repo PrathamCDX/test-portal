@@ -69,8 +69,10 @@ export interface CandidateInfo {
   export interface QuestionBreakdown {
     questionNumber: number
     questionTitle: string
+    problemStatement: string
     isCorrect: boolean
     correctOption: string
+    options: string[]
     userAnswer: string | null
     marksAwarded: number
     marksTotal: number

@@ -18,6 +18,7 @@
     "framer-motion": "^12.7.4",
     "katex": "^0.16.28",
     "lucide-react": "^0.488.0",
+    "markdown-it": "^14.1.1",
     "mongoose": "^8.13.2",
     "next": "^15.5.12",
     "prism-react-renderer": "^2.4.1",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/markdown-it": "^14.1.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
