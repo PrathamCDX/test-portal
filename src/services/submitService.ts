@@ -1,12 +1,112 @@
+// import 'server-only';
+// export const runtime = 'nodejs';
+export const runtime = process.env.NEXT_RUNTIME ;
+
+
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import chromium from '@sparticuz/chromium-min';
 import axios, { AxiosResponse } from 'axios';
+import ejs from 'ejs';
+// import fs from 'fs';
+// import MarkdownIt from 'markdown-it';
+// import path from 'path';
 import puppeteer from 'puppeteer-core';
 
 import { s3 } from '@/configs/awsConfig';
 import { CANDIDATE_API } from '@/constants';
 import { CandidateResponse, CandidateResult } from '@/types';
-import { advancedTestPdfContent, intermediateTestPdfContent } from '@/utils';
+import { advancedTestPdfContent } from '@/utils';
+
+// const md = new MarkdownIt({ html: false, linkify: true, typographer: true, });
+
+
+export async function renderIntermediateReportCard(
+  candidateResult: CandidateResult
+): Promise<string> {
+
+  try {
+    console.log('Function entered');
+
+    // const templatePath = path.join(
+    //   process.cwd(),
+    //   'templates',
+    //   'intermediateReportCardTemplate.ejs'
+    // );
+
+    console.log('Path built:', candidateResult);
+    let html = '';
+    try {
+      // html = ejs.render(intermediateEjs, { 
+      //   ...candidateResult, 
+      // });
+      html = ejs.render('<h1>Test</h1>', {});
+  console.log('Simple render works');
+    } catch (error) {
+      console.error('EJS Error:', error);
+      console.error('Stack:', error);
+    }
+    console.log('Current runtime:', runtime);
+    console.log('EJS rendered successfully');
+    console.log('What is ejs?', ejs);
+console.log('Type:', typeof ejs);
+console.log('Is it a function?', typeof ejs === 'function');
+console.log('Has render?', typeof ejs?.render);
+console.log('Keys:', Object.keys(ejs || {}));
+
+// If ejs.render doesn't exist, try:
+// console.log('Direct render?', typeof ejs?.default?.render);
+    return html;
+  } catch (err) {
+    console.error('REPORT CARD ERROR:', err);
+    throw err;
+  }
+}
+
+
+// export async function renderAdvancedReportCard(
+//   candidateResult: CandidateResult
+// ): Promise<string> {
+//   const templatePath = path.join(
+//     process.cwd(),
+//     'templates',
+//     'demo.ejs'
+//   );
+
+//   // const candidateResultMarkdown = {
+//   //   ...candidateResult,
+//   //   sections: (candidateResult.sections ?? []).map((section) => ({
+//   //     ...section,
+//   //     questions: (section.questions ?? []).map((question) => ({
+//   //       ...question,
+//   //       problemStatement: md.render(question.problemStatement ?? ''),
+//   //     })),
+//   //   })),
+//   // };
+
+//   console.log(templatePath, candidateResult);
+
+//   // const template =await fs.readFil/eSync(templatePath, 'utf-8');
+//   return await ejs.renderFile(templatePath);
+
+//   return 'ejs.renderFile(templatePath, candidateResultMarkdown);';
+// }
+
+
+//   candidateResult: CandidateResult
+// ): Promise<string> {
+
+//   const templatePath = path.join(
+//     process.cwd(),
+//     'templates',
+//     'advancedReportCardTemplate.ejs'
+//   );
+
+//   const template = fs.readFileSync(templatePath, 'utf-8');
+
+//   return ejs.render(template, {
+//     ...candidateResult,
+//   });
+// }
 
 // const isLocal = !!process.env.EXECUTABLE_PATH;
 async function submitService(candidateResult: CandidateResult) {
@@ -24,7 +124,7 @@ async function submitService(candidateResult: CandidateResult) {
     
         const page = await browser.newPage();
     
-        const pageContent = problemLevel ? problemLevel == 'Intermediate' ? intermediateTestPdfContent(candidateResult) : advancedTestPdfContent(candidateResult) : intermediateTestPdfContent(candidateResult);
+        const pageContent = problemLevel ? problemLevel == 'Intermediate' ? await renderIntermediateReportCard(candidateResult) : advancedTestPdfContent(candidateResult) : await renderIntermediateReportCard(candidateResult);
     
         await page.setContent(pageContent, {
             waitUntil: 'networkidle0'
